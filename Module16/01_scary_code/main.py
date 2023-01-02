@@ -21,4 +21,4 @@ for i in d:
 print(t)
 print(d)
 
-# TODO переписать программу
+# Initial commit.
