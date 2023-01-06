@@ -1,15 +1,17 @@
-def create_list(elements_quantity, list_number):
+def fill_list(elements_quantity):
     result_list = []
 
     for index in range(elements_quantity):
-        input_number = int(input(f'Введите {index + 1}-е число для {list_number}-го списка: '))
+        input_number = int(input(f'Введите {index + 1}-е число: '))
         result_list.append(input_number)
 
     return result_list
 
 
-first_list = create_list(3, 1)
-second_list = create_list(7, 2)
+print('ПЕРВЫЙ СПИСОК')
+first_list = fill_list(3)
+print('\nВТОРОЙ СПИСОК')
+second_list = fill_list(7)
 print('\nПервый список:', first_list)
 print('Второй список:', second_list)
 
