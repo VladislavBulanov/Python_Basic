@@ -1,6 +1,5 @@
 def extend_list(input_list, additional_list):
-    output_list = []
-    output_list.extend(input_list)
+    output_list = [element for element in input_list]
     output_list.extend(additional_list)
     return output_list
 
