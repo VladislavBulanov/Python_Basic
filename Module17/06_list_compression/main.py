@@ -1,19 +1,15 @@
 import random
 
-def fill_the_numbers_list(quantity):
+def generate_numbers(quantity):
     return [random.randint(0, 2) for _ in range(quantity)]
 
 
-def delete_all_nulls(source_list):
-    result_list = [number for number in source_list]
-
-    while result_list.count(0):
-        result_list.remove(0)
-
+def delete_number(source_list, chosen_number):
+    result_list = [number for number in source_list if number != chosen_number]
     return result_list
 
 
 numbers_quantity = int(input('Введите количество чисел в списке: '))
-numbers_list = fill_the_numbers_list(numbers_quantity)
+numbers_list = generate_numbers(numbers_quantity)
 print('Список до сжатия:', numbers_list)
-print('Список после сжатия:', delete_all_nulls(numbers_list))
+print('Список после сжатия:', delete_number(numbers_list, 0))
