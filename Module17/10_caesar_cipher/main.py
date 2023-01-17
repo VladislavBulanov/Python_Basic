@@ -1,4 +1,4 @@
-def encrypt_the_message(message, offset):
+def encrypt_message(message, offset):
     """
     :param message: source message for encrypt
     :type message: str
@@ -19,5 +19,5 @@ def encrypt_the_message(message, offset):
 input_message = input('Введите сообщение: ').lower()
 shift = int(input('Введите сдвиг: '))
 
-encrypted_message = encrypt_the_message(input_message, shift)
+encrypted_message = encrypt_message(input_message, shift)
 print('Зашифрованное сообщение:', "".join(encrypted_message))
