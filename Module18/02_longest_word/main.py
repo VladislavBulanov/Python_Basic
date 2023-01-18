@@ -1,14 +1,18 @@
-def find_longest_element(source_list):
-    result = source_list[0]
+def find_longest_word(words_list):
+    max_length_word = words_list[0]
 
-    for element in source_list:
-        if len(element) > len(result):
-            result = element
+    for word in words_list:
+        if len(word) > len(max_length_word):
+            max_length_word = word
 
-    return result
+    return max_length_word
 
 
-source_text = input('Введите строку: ').split()
-longest_word = find_longest_element(source_text)
-print('Самое длинное слово:', longest_word)
-print('Длина этого слова:', len(longest_word))
+input_text = input('Введите строку: ').split()
+longest_word = find_longest_word(input_text)
+length = len(longest_word)
+
+print('Самое длинное слово: {0}\nДлина этого слова: {1}'.format(
+    longest_word,
+    length
+))

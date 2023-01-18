@@ -1,33 +1,23 @@
-def digit_count(string):
+def count_digits(source_string):
     count = 0
 
-    for symbol in string:
+    for symbol in source_string:
         if symbol.isdigit():
             count += 1
 
     return count
 
 
-def is_upper(string):
-    flag = False
-
-    for symbol in string:
-        if symbol.isupper():
-            flag = True
-            break
-
-    return flag
-
-
 while True:
     password = input('Придумайте пароль: ')
+    error_message = 'Пароль ненадёжный. Попробуйте ещё раз.\n'
 
     if len(password) < 8:
-        print('Пароль ненадёжный. Попробуйте ещё раз.\n')
-    elif digit_count(password) < 3:
-        print('Пароль ненадёжный. Попробуйте ещё раз.\n')
-    elif not is_upper(password):
-        print('Пароль ненадёжный. Попробуйте ещё раз.\n')
+        print(error_message)
+    elif password.islower():
+        print(error_message)
+    elif count_digits(password) < 3:
+        print(error_message)
     else:
         print('Это надёжный пароль!')
         break

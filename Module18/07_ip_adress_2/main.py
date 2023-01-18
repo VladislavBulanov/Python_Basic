@@ -1,35 +1,20 @@
-# TODO
-def not_digit(ip_address):
-    flag = False
-
-    for element in ip_address:
-        if not element.isdigit():
-            return element
-
-    return flag
-
-
-def not_in_interval(ip_address):
-    flag = False
-
-    for element in ip_address:
-        if int(element) > 255:
-            return element
-
-    return flag
-
-
 while True:
-    address = input('Введите IP-адрес: ').split('.')
-    # is_not_digit = not_digit(address)
-    # in_interval = not_in_interval(address)
+    ip_address = input('Введите IP-адрес: ')
+    address_parts = ip_address.split('.')
 
-    if not_digit(address):
-        print(f'{not_digit(address)} - это не целое число.\n')
-    elif not_in_interval(address):
-        print(f'{not_in_interval(address)} превышает 255.\n')
-    elif len(address) != 4:
-        print('IP-адрес - это четыре числа, разделённые точками.\n')
+    if len(address_parts) != 4:
+        print('Адрес — это четыре числа, разделённые точками.\n')
     else:
-        print('IP-адрес корректен.')
-        break
+
+        for element in address_parts:
+            if not element.isdigit():
+                print(f'{element} - это не целое число.\n')
+                break
+            elif int(element) > 255:
+                print(f'{element} превышает 255.\n')
+                break
+        # У for и while может быть прописан блок else. Он выполняется в том
+        # случае, если цикл завершился "штатно", без досрочного выхода:
+        else:
+            print('IP-адрес корректен.')
+            break

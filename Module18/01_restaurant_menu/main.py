@@ -1,5 +1,5 @@
 def generate_dishes_list():
-    return input('Доступное меню: ').lower().split(';')
+    return [dish for dish in input('Доступное меню ресторана: ').lower().split(';')]
 
 
 menu = generate_dishes_list()
