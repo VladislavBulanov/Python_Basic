@@ -1,22 +1,31 @@
-def count_digits(source_string):
+def check_length(initial_string, limit_length):
+    length = len(initial_string)
+    return True if length >= limit_length else False
+
+
+def check_register(input_string):
+    return False if input_string.islower() else True
+
+
+def count_digits(source_string, required_count):
     count = 0
 
     for symbol in source_string:
         if symbol.isdigit():
             count += 1
 
-    return count
+    return True if count >= required_count else False
 
 
 while True:
     password = input('Придумайте пароль: ')
     error_message = 'Пароль ненадёжный. Попробуйте ещё раз.\n'
 
-    if len(password) < 8:
+    if not check_length(password, 8):
         print(error_message)
-    elif password.islower():
+    elif not check_register(password):
         print(error_message)
-    elif count_digits(password) < 3:
+    elif not count_digits(password, 3):
         print(error_message)
     else:
         print('Это надёжный пароль!')

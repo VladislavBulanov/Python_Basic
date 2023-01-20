@@ -1,6 +1,7 @@
-def generate_dishes_list():
-    return [dish for dish in input('Доступное меню ресторана: ').lower().split(';')]
+def get_menu(list_of_dishes):
+    return ', '.join(list_of_dishes)
 
 
-menu = generate_dishes_list()
-print('\nНа данный момент в меню есть:', ", ".join(menu))
+dishes_list = input('Доступное меню ресторана: ').lower().split(';')
+menu = get_menu(dishes_list)
+print('\nНа данный момент в меню есть: {}.'.format(menu))
