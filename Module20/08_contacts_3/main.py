@@ -20,8 +20,16 @@ def add_contact(source_contacts):
     return current_contacts
 
 
-def find_person():
-    pass
+def find_person(initial_contacts):
+    surname = input('Введите фамилию для поиска: ').lower()
+
+    found_matches = {human: number for human, number in initial_contacts.items()
+                     if human[1].lower() == surname}
+
+    if found_matches:
+        for human, number in found_matches.items():
+            print(*)
+
 
 
 contacts = dict()
@@ -32,10 +40,10 @@ while True:
                             '\t2. Найти человека\n'))
 
     if user_choice not in (1, 2):
-        print('Нет такого пункта меню. Пожалуйста, повторите ввод.')
+        print('Такого пункта меню не существует. Пожалуйста, повторите ввод.')
     else:
         if user_choice == 1:
             contacts = add_contact(contacts)
             print('Текущий словарь контактов:', contacts)
         else:
-            find_person()
+            find_person(contacts)
