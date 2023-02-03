@@ -8,15 +8,16 @@ def add_contact(source_contacts):
     current_contacts = {key: value for key, value in source_contacts.items()}
     new_name, new_surname = input('\nВведите имя и фамилию нового контакта '
                                   '(через пробел): ').split()
-    new_phone_number = int(input('Введите номер телефона: '))
 
     for person in current_contacts:
         if new_name.lower() == person[0].lower() and new_surname.lower() == person[1].lower():
             print('Такой человек уже есть в контактах.')
             break
     else:
+        new_phone_number = int(input('Введите номер телефона: '))
         current_contacts[(new_name, new_surname)] = new_phone_number
 
+    print('Текущий словарь контактов:', current_contacts)
     return current_contacts
 
 
@@ -28,8 +29,7 @@ def find_person(initial_contacts):
 
     if found_matches:
         for human, number in found_matches.items():
-            print(*)
-
+            print(*human, number)
 
 
 contacts = dict()
@@ -44,6 +44,5 @@ while True:
     else:
         if user_choice == 1:
             contacts = add_contact(contacts)
-            print('Текущий словарь контактов:', contacts)
-        else:
+        elif user_choice == 2:
             find_person(contacts)
