@@ -1,14 +1,24 @@
+def eratosthenes_sieve(number):
+    prime_numbers_list = []
+    sieve = set(range(2, number + 1))
+
+    while sieve:
+        prime_number = min(sieve)
+        prime_numbers_list.append(prime_number)
+        sieve -= set(range(prime_number, number + 1, prime_number))
+
+    return prime_numbers_list
+
+
 def is_prime(source_number):
     if source_number == 0 or source_number == 1:
         return False
-    elif source_number == 2 or source_number == 3:
-        return True
     else:
-        for current_number in range(2, source_number // 2 + 1):
-            if source_number % current_number == 0:
-                return False
-        else:
+        list_of_prime_numbers = eratosthenes_sieve(source_number)
+        if source_number in list_of_prime_numbers:
             return True
+        else:
+            return False
 
 
 def crypto(source_object):
