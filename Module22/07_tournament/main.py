@@ -31,9 +31,15 @@ def write_information_to_file(required_path, statistics):
 
 
 def sort_dictionary_by_value(dictionary):
-    inverted_dictionary = {value: key for key, value in dictionary.items()}
-    sorted_keys_list = sorted(list(inverted_dictionary.keys()), reverse=True)
-    return {inverted_dictionary[key]: key for key in sorted_keys_list}
+    data_list = [[key, value] for key, value in dictionary.items()]
+
+    for i_index in range(len(data_list)):
+        for j_index in range(i_index, len(data_list)):
+            if data_list[j_index][1] > data_list[i_index][1]:
+                data_list[j_index], data_list[i_index] = \
+                    data_list[i_index], data_list[j_index]
+
+    return {element[0]: element[1] for element in data_list}
 
 
 path_to_datafile = os.path.abspath('first_tour.txt')
