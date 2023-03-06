@@ -2,6 +2,7 @@ from elements import (
     Water, Air, Fire, Earth, Metal
 )
 
+
 def check_object(initial_object):
     if initial_object:
         print(initial_object.name)
