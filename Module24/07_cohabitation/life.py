@@ -32,6 +32,13 @@ class Human:
         self.house.money += gain
         self.satiety -= gain
 
+    def play(self, gain):
+        print('{} играет (-{} сытости)'.format(
+            self.name,
+            gain
+        ))
+        self.satiety -= gain
+
 
 class House:
     def __init__(self, food=50, money=0):

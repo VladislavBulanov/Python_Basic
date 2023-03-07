@@ -10,11 +10,17 @@ def do_action(character):
         character.go_to_store(action_points)
     elif character.house.money < 50:
         character.go_work(action_points)
+    elif action_points == 1:
+        character.go_work(action_points)
+    elif action_points == 2:
+        character.eat(action_points)
+    else:
+        character.play(action_points)
 
 
 def start_life(man_1, man_2):
     for day in range(1, 366):
-        if man_1.satiety >= 0 and man_2.satiety >= 0:
+        if (man_1.satiety >= 0) and (man_2.satiety >= 0):
             print('\nДЕНЬ {}'.format(day))
             do_action(man_1)
             do_action(man_2)
@@ -23,16 +29,17 @@ def start_life(man_1, man_2):
         elif man_2.satiety < 0:
             print('\n{} умер с голода...'.format(man_2.name))
     else:
-        print('\n{} и {} смогли прожить вместе целый год!'.format(
-            man_1.name,
-            man_2.name
+        print('\n{} И {} СМОГЛИ ПРОЖИТЬ ВМЕСТЕ ЦЕЛЫЙ ГОД!'.format(
+            man_1.name.upper(),
+            man_2.name.upper()
         ))
 
 
 def main():
+    print('======= СИМУЛЯТОР СОВМЕСТНОГО ПРОЖИВАНИЯ =======\n')
     house = House()
-    human_1 = Human('Иван', house)
-    human_2 = Human('Андрей', house)
+    human_1 = Human(input('Введите имя первого человека: '), house)
+    human_2 = Human(input('Введите имя второго человека: '), house)
     start_life(human_1, human_2)
 
 
