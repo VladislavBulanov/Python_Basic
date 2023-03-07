@@ -1,4 +1,5 @@
-from family import (Parent, Child)
+from family import Parent, Child
+
 
 def create_parent():
     parent_name = input('\nВведите имя родителя: ')

@@ -1,4 +1,5 @@
-from garden import (PotatoGarden, Gardener)
+from garden import PotatoGarden, Gardener
+
 
 def create_gardener():
     gardener_name = input('Введите имя садовника: ')

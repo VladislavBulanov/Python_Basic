@@ -1,4 +1,4 @@
-from life import (Human, House)
+from life import Human, House
 from random import randint
 
 

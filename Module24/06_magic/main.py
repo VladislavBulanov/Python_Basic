@@ -1,6 +1,4 @@
-from elements import (
-    Water, Air, Fire, Earth, Metal
-)
+from elements import Water, Air, Fire, Earth, Metal
 
 
 def check_object(initial_object):
