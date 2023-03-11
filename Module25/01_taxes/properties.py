@@ -1,5 +1,6 @@
 """This module describing difference types of human properties."""
 
+
 class Property:
     """Basic class describing human's property."""
     def __init__(self, worth: float):
@@ -56,7 +57,6 @@ class Car(Property):
         :return: car's tax
         """
         return self.get_worth() / coefficient
-
 
 
 class CountryHouse(Property):
