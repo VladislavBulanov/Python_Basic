@@ -1,5 +1,6 @@
 from properties import Apartment, Car, CountryHouse
 
+
 def calculate_total_tax(
         apartment_worth: float,
         car_worth: float,
@@ -11,8 +12,10 @@ def calculate_total_tax(
     apartment = Apartment(apartment_worth)
     car = Car(car_worth)
     house = CountryHouse(house_worth)
-    sum_of_tax = apartment.calculate_tax() + car.calculate_tax() + \
-                 house.calculate_tax()
+    sum_of_tax = (
+            apartment.calculate_tax() + car.calculate_tax() +
+            house.calculate_tax()
+    )
     return sum_of_tax
 
 
