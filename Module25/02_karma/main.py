@@ -1,60 +1,71 @@
-import random
+from random import randint
+from  os import path
+from errors import (
+    KillError, DrunkError, CarCrashError, GluttonyError, DepressionError
+)
 
-class KarmaError(Exception):
-    pass
 
-class KillError(KarmaError):
-    pass
+class Human:
+    """Class create human with karma points."""
+    def __init__(self, karma_points=0):
+        self.__karma_points = karma_points
 
-class DrunkError(KarmaError):
-    pass
+    def get_karma_points(self):
+        """Karma points getter."""
+        return self.__karma_points
 
-class CarCrashError(KarmaError):
-    pass
+    def set_karma_points(self, points: int):
+        """Karma points setter."""
+        self.__karma_points = points
 
-class GluttonyError(KarmaError):
-    pass
 
-class DepressionError(KarmaError):
-    pass
+def simulate_life():
+    """
+    The main function of program which create human and possible karma
+    violations (errors) and simulate human's life with observation of karma.
+    Karma violations are written in logfile.
+    """
+    human = Human()
+    possible_errors = create_possible_errors()
 
-class KarmaSimulator:
-    def __init__(self):
-        self._karma = 0
-        self._log = []
-
-    def get_karma(self):
-        return self._karma
-
-    def set_karma(self, karma):
-        self._karma = karma
-
-    def get_log(self):
-        return self._log
-
-    def add_log(self, message):
-        self._log.append(message)
-
-    def one_day(self):
+    while human.get_karma_points() < 500:
         try:
-            karma_gain = random.randint(1, 7)
-            self.add_log(f"Karma gained: {karma_gain}")
-            if random.random() < 0.1:
-                raise random.choice([
-                    KillError("Killed someone"),
-                    DrunkError("Got drunk"),
-                    CarCrashError("Had a car crash"),
-                    GluttonyError("Ate too much"),
-                    DepressionError("Felt into depression")
-                ])
-            self.set_karma(self.get_karma() + karma_gain)
-        except KarmaError as e:
-            self.add_log(str(e))
+            one_day(human)
+        except Warning:
+            with open(path.abspath('karma.log'), 'a', encoding='utf-8') as log_file:
+                log_file.write('{}\n'.format(
+                    str(possible_errors[randint(0, 4)])
+                ))
 
-if __name__ == "__main__":
-    simulator = KarmaSimulator()
-    while simulator.get_karma() < 500:
-        simulator.one_day()
-    print(f"Enlightenment achieved with {simulator.get_karma()} karma!")
-    with open("karma.log", "w") as f:
-        f.write("\n".join(simulator.get_log()))
+    print('\nВаши очки кармы: {}.\nВЫ ДОСТИГЛИ ПРОСВЕТЛЕНИЯ!'.format(
+        human.get_karma_points()
+    ))
+
+
+def one_day(human):
+    """
+    Simulating of one day of human. Human can earn karma points
+    or can raise karma violation.
+    """
+    if randint(1, 10) == 1:
+        raise Warning
+    else:
+        karma_gain = randint(1, 7)
+        human.set_karma_points(human.get_karma_points() + karma_gain)
+
+
+def create_possible_errors():
+    """
+    Creating possible karma violations (subclasses of Error class).
+    :rtype: tuple
+    """
+    kill = KillError()
+    drunk = DrunkError()
+    car_crash = CarCrashError()
+    gluttony = GluttonyError()
+    depression = DepressionError()
+    return kill, drunk, car_crash, gluttony, depression
+
+
+if __name__ == '__main__':
+    simulate_life()
