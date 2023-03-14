@@ -1,24 +1,19 @@
-class MyDict:
-    def __init__(self, dictionary: dict):
-        self.__dictionary = dictionary
-
-    def get_value(self, key):
-        if key in self.__dictionary:
-            return self.__dictionary[key]
-        else:
-            return 0
-
-    def set_key_value(self, key, value):
-        self.__dictionary[key] = value
+class MyDict(dict):
+    """Subclass of built-in class 'dict' with changed 'get' method."""
+    def get(self, key, default=0):
+        """Get value by key. If key doesn't exist return 0."""
+        return super().get(key, default)
 
     def show_dictionary(self):
-        for key, value in self.__dictionary.items():
+        """Show current data in format 'key: value'."""
+        for key, value in self.items():
             print('{}: {}'.format(key, value))
 
 
-my_dict = MyDict(dict())
-my_dict.set_key_value('t', 5)
-my_dict.set_key_value('t', 6)
-my_dict.set_key_value(8, 'r')
-print(my_dict.get_value(8))
-my_dict.show_dictionary()
+# # Tests:
+# dictionary = MyDict({'a': 5, 'b': 10})
+# print(dictionary.get('a'))  # key exists
+# print(dictionary.get('c'))  # key doesn't exist
+# print(dictionary.get('c', 1))  # key doesn't exist with returned value 1
+# print()
+# dictionary.show_dictionary()
