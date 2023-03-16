@@ -1,1 +1,3 @@
-# TODO здесь писать код
+from work import Manager, Agent, Worker
+
+
