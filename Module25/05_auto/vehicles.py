@@ -50,7 +50,7 @@ class Car:
     def move(self, distance: float):
         """
         Forces the vehicle to move a specified distance.
-        Set new coordinates of vehicle.
+        Sets new coordinates of vehicle.
         :param distance: the distance to which the car should move
         :type distance: float
         """
@@ -74,12 +74,12 @@ class Bus(Car):
     as well as information about passengers and money earned.
     """
     def __init__(
-            self,
-            x: float = 0,
-            y: float = 0,
-            angle: float = 0,
-            passengers: int = 0,
-            money: float = 0
+        self,
+        x: float = 0,
+        y: float = 0,
+        angle: float = 0,
+        passengers: int = 0,
+        money: float = 0
     ):
         """
         Class constructor.
@@ -93,25 +93,43 @@ class Bus(Car):
         self.__passengers = passengers
         self.__money = money
 
-    # TODO
+
     def get_passengers(self):
+        """
+        Quantity of passengers getter.
+        :rtype: int
+        """
         return self.__passengers
 
-    def set_passengers(self, passengers):
+    def set_passengers(self, passengers: int):
+        """Quantity of passengers setter."""
         self.__passengers = passengers
 
     def get_money(self):
+        """
+        Amount money getter.
+        :rtype: float
+        """
         return self.__money
 
-    def set_money(self, money):
+    def set_money(self, money: float):
+        """Amount money setter."""
         self.__money = money
 
-    def move(self, distance):
+    def move(self, distance: float):
+        """
+        Forces the vehicle to move a specified distance.
+        Sets new coordinates of vehicle and collects money.
+        :param distance: the distance to which the car should move
+        :type distance: float
+        """
         super().move(distance)
         self.__money += distance * self.__passengers
 
-    def board(self, passengers):
+    def board(self, passengers: int):
+        """Take passengers on board (increase passengers quantity)."""
         self.__passengers += passengers
 
-    def leave(self, passengers):
+    def leave(self, passengers: int):
+        """Disembark passengers from the board (decrease passengers quantity)."""
         self.__passengers -= passengers
