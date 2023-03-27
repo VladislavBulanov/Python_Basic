@@ -22,6 +22,17 @@ class House:
         self.__cats_food = cats_food
         self.__dirt = dirt
 
+    def print_general_info(self):
+        """Displays all attributes of class exemplar."""
+        print('\nСОСТОЯНИЕ ДОМА:\nДеньги: {}\nПродукты: {}'.format(
+            self.get_money(),
+            self.get_humans_food()
+        ))
+        print('Корм: {}\nГрязь: {}'.format(
+            self.get_cats_food(),
+            self.get_dirt()
+        ))
+
     def get_money(self) -> int:
         """Getter of money quantity in house."""
         return self.__money
@@ -51,7 +62,7 @@ class House:
         return self.__dirt
 
     def set_dirt(self, dirt: int):
-        """Getter of dirt quantity in house."""
+        """Setter of dirt quantity in house."""
         self.__dirt = dirt
 
 
@@ -60,16 +71,24 @@ class Human:
     The class describing human. Each action (except eat) decreases
     degree of satiety by 10 points.
     """
-    def __init__(self, name: str, satiety: int = 30, happy: int = 100):
+    def __init__(
+            self,
+            name: str,
+            satiety: int = 30,
+            happy: int = 100,
+            eaten_food: int = 0
+    ):
         """
         Class constructor.
         :param name: name of human
         :param satiety: degree of human's satiety
         :param happy: degree of human's happy
+        :param eaten_food: how much food was eaten
         """
         self.__name = name
         self.__satiety = satiety
         self.__happy = happy
+        self.__eaten_food = eaten_food
 
     def get_name(self) -> str:
         """Getter of human's name."""
@@ -111,16 +130,29 @@ class Human:
         if self.get_happy() < 10:
             raise ValueError('ЧЕЛОВЕК УМЕР ОТ ДЕПРЕССИИ!')
 
-    def eat(self, eat_amount: int):
+    def get_eaten_food(self) -> int:
+        """Getter of eaten food."""
+        return self.__eaten_food
+
+    def set_eaten_food(self, food: int):
+        """Setter of eaten food."""
+        self.__eaten_food = food
+
+    def eat(self, house: House, food_quantity: int = 20):
         """
-        Method allows human increase his degree of satiety.
-        Human can eat only 30 units of food.
-        :param eat_amount: quantity of eat
+        Method allows human increase his degree of satiety by specified points.
+        Human can eat only 30 units of food per time.
+        :param house: the house where human lives
+        :param food_quantity: total food human will eat
         """
-        if eat_amount <= 30:
-            self.set_satiety(self.get_satiety() + eat_amount)
+        if house.get_humans_food() >= food_quantity:
+            self.set_satiety(self.get_satiety() + food_quantity)
+            self.set_eaten_food(self.get_eaten_food() + food_quantity)
+            house.set_humans_food(house.get_humans_food() - food_quantity)
+            print('{} поел(а).'.format(self.get_name()))
         else:
-            print('Человек может съесть максимум 30 единиц еды.')
+            print('Недостаточное количество еды.')
+            self.set_satiety(self.get_satiety() - 10)
 
     def pet_a_cat(self):
         """
@@ -129,6 +161,7 @@ class Human:
         """
         self.set_happy(self.get_happy() + 5)
         self.set_satiety(self.get_satiety() - 10)
+        print('{} погладил(а) кота.'.format(self.get_name()))
 
 
 class Husband(Human):
@@ -136,22 +169,48 @@ class Husband(Human):
     The subclass of class 'Human' describing husband. Each action
     (except eat) decreases degree of satiety by 10 points.
     """
-    def __init__(self, name: str):
-        """Class constructor."""
+    def __init__(self, name: str, earned_money: int = 0):
+        """
+        Class constructor.
+        :param name: husband's name
+        :param earned_money: quantity of earned money by husband
+        """
         super().__init__(name)
+        self.__earned_money = earned_money
+
+    def print_general_info(self):
+        """Displays all attributes of class exemplar."""
+        print('\nИНФОРМАЦИЯ О МУЖЕ:\nИмя: {}\nСытость: {}\nСчастье: {}'.format(
+            self.get_name(),
+            self.get_satiety(),
+            self.get_happy()
+        ))
+
+    def get_earned_money(self) -> int:
+        """Getter of earned money by husband."""
+        return self.__earned_money
+
+    def set_earned_money(self, total: int):
+        """Setter of earned money by husband."""
+        self.__earned_money = total
 
     def game(self):
         """Husband plays computer. It increases his happy by 20 points."""
         self.set_happy(self.get_happy() + 20)
         self.set_satiety(self.get_satiety() - 10)
+        print('{} поиграл в компьютер.'.format(self.get_name()))
 
-    def go_work(self, house: House):
+    def go_work(self, house: House, salary: int = 150):
         """
-        Husband goes to the work and brings 150 units of money in house.
+        Husband goes to the work and brings salary
+        in house (150 units of money by default).
         :param house: house where husband lives
+        :param salary: husband's salary
         """
-        house.set_money(house.get_money() + 150)
+        house.set_money(house.get_money() + salary)
+        self.set_earned_money(self.get_earned_money() + salary)
         self.set_satiety(self.get_satiety() - 10)
+        print('{} сходил на работу.'.format(self.get_name()))
 
 
 class Wife(Human):
@@ -159,28 +218,56 @@ class Wife(Human):
     The subclass of class 'Human' describing wife. Each action
     (except eat) decreases degree of satiety by 10 points.
     """
-    def __init__(self, name: str):
+    def __init__(self, name: str, fur_coat_amount: int = 0):
         """Class constructor."""
         super().__init__(name)
+        self.__fur_coat_amount = fur_coat_amount
+
+    def print_general_info(self):
+        """Displays all attributes of class exemplar."""
+        print('\nИНФОРМАЦИЯ О ЖЕНЕ:\nИмя: {}\nСытость: {}'.format(
+            self.get_name(),
+            self.get_satiety()
+        ))
+        print('Счастье: {}\nКоличество шуб: {}'.format(
+            self.get_happy(),
+            self.get_fur_coat_amount()
+        ))
+
+    def get_fur_coat_amount(self) -> int:
+        """Getter of wife's fur coat amount."""
+        return self.__fur_coat_amount
+
+    def set_fur_coat_amount(self, quantity: int):
+        """Setter of wife's fur coat amount."""
+        self.__fur_coat_amount = quantity
 
     def buy_humans_food(self, house: House):
         """
-        Wife buys human's food. It costs 10 units of money
-        and increases human's food in the house by 10 units.
+        Wife buys human's food. It costs 50 units of money
+        and increases human's food in the house by 50 units.
         :param house: house where wife lives
         """
-        house.set_money(house.get_money() - 10)
-        house.set_humans_food(house.get_humans_food() + 10)
+        if house.get_money() >= 50:
+            house.set_money(house.get_money() - 50)
+            house.set_humans_food(house.get_humans_food() + 50)
+            print('{} купила продукты.'.format(self.get_name()))
+        else:
+            print('Недостаточное количество денег.')
         self.set_satiety(self.get_satiety() - 10)
 
     def buy_cats_food(self, house: House):
         """
-        Wife buys cat's food. It costs 10 units of money
-        and increases cat's food in the house by 10 units.
+        Wife buys cat's food. It costs 30 units of money
+        and increases cat's food in the house by 30 units.
         :param house: house where wife lives
         """
-        house.set_money(house.get_money() - 10)
-        house.set_cats_food(house.get_cats_food() + 10)
+        if house.get_money() >= 30:
+            house.set_money(house.get_money() - 30)
+            house.set_cats_food(house.get_cats_food() + 30)
+            print('{} купила кошачий корм.'.format(self.get_name()))
+        else:
+            print('Недостаточное количество денег.')
         self.set_satiety(self.get_satiety() - 10)
 
     def buy_fur_coat(self, house: House, money_limit: int = 400):
@@ -195,9 +282,11 @@ class Wife(Human):
         if house.get_money() >= money_limit:
             house.set_money(house.get_money() - 350)
             self.set_happy(self.get_happy() + 60)
-            self.set_satiety(self.get_satiety() - 10)
+            self.set_fur_coat_amount(self.get_fur_coat_amount() + 1)
+            print('{} купила шубу.'.format(self.get_name()))
         else:
             print('Сейчас недостаточно денег для покупки шубы.')
+        self.set_satiety(self.get_satiety() - 10)
 
     def clean_up(self, house: House):
         """
@@ -210,6 +299,7 @@ class Wife(Human):
         else:
             house.set_dirt(0)
         self.set_satiety(self.get_satiety() - 10)
+        print('{} убралась в доме.'.format(self.get_name()))
 
 
 class Cat:
@@ -225,6 +315,14 @@ class Cat:
         """
         self.__name = name
         self.__satiety = satiety
+
+    def print_general_info(self):
+        """Displays all attributes of class exemplar."""
+        print('\nИНФОРМАЦИЯ О КОТЕ/КОШКЕ:')
+        print('Кличка: {}\nСытость: {}'.format(
+            self.get_name(),
+            self.get_satiety()
+        ))
 
     def get_name(self) -> str:
         """Getter of cat's name."""
@@ -250,21 +348,24 @@ class Cat:
         if self.get_satiety() <= 0:
             raise ValueError('КОТ УМЕР ОТ ГОЛОДА!')
 
-    def eat(self, eat_amount: int):
+    def eat(self, house: House):
         """
         Method allows cat increase his degree of satiety
         (one unit of food - two points of degree of satiety).
-        Cat can eat only 10 units of food.
-        :param eat_amount: quantity of eat
+        :param house: the house where cat lives
         """
-        if eat_amount <= 10:
-            self.set_satiety(self.get_satiety() + eat_amount * 2)
+        if house.get_cats_food() >= 10:
+            self.set_satiety(self.get_satiety() + 20)
+            house.set_cats_food(house.get_cats_food() - 10)
+            print('{} поел(а).'.format(self.get_name()))
         else:
-            print('Кот может съесть максимум 10 единиц еды.')
+            print('Недостаточное количество корма.')
+            self.set_satiety(self.get_satiety() - 10)
 
     def sleep(self):
         """Cat sleeps."""
         self.set_satiety(self.get_satiety() - 10)
+        print('{} поспал(а).'.format(self.get_name()))
 
     def tear_wallpapers(self, house: House):
         """
@@ -274,3 +375,4 @@ class Cat:
         """
         house.set_dirt(house.get_dirt() + 5)
         self.set_satiety(self.get_satiety() - 10)
+        print('{} подрал(а) обои.'.format(self.get_name()))
