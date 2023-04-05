@@ -9,7 +9,7 @@ class Node:
     def __init__(
             self,
             value: Optional[Any] = None,
-            next_node: Optional[Any] = None
+            next_node: Optional['Node'] = None
     ) -> None:
         """
         Class constructor.
