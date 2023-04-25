@@ -1,8 +1,15 @@
+from functools import wraps
+
+
 def singleton(cls):
+    """Class decorator that allows to create only one class' instance."""
+    @wraps(cls)
     def wrapper(*args, **kwargs):
-        print('Создаётся инстанс...')
-        instance = cls(*args, **kwargs)
-        return instance
+        if wrapper.instance is None:
+            wrapper.instance = cls(*args, **kwargs)
+        return wrapper.instance
+
+    wrapper.instance = None
     return wrapper
 
 
