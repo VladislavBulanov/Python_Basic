@@ -1,7 +1,6 @@
-from re import findall
+from re import findall, DOTALL
 from typing import List
 import requests
-import json
 
 
 def get_tag_content(tag: str, data: str) -> List[str]:
@@ -10,21 +9,17 @@ def get_tag_content(tag: str, data: str) -> List[str]:
     :param tag: HTML-tag
     :param data: source HTML-code
     """
-    pattern = fr'>.*</{tag}>'
-    closing_tags_length = len(tag) + 3
-    matches = findall(pattern, data)
-    result = [match[1:-closing_tags_length] for match in matches]
-    return result
+    pattern = fr'<{tag}>(.*?)</{tag}>'
+    return findall(pattern, data, flags=DOTALL)
 
 
 if __name__ == '__main__':
     # Test 1:
-    with open('examples.html', 'r') as f:
-        text = f.read()
+    with open('examples.html', 'r') as file:
+        text = file.read()
     print(get_tag_content('h3', text))
 
     # Test 2:
-    # TODO
-    request = requests.get('https://nhl.com/')
-    data = json.loads(request.text)
-    print(data)
+    response = requests.get('https://skillbox.ru/')
+    if response.status_code == 200:
+        print(get_tag_content('h3', response.text))
