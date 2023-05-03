@@ -1,46 +1,73 @@
-import json
-from typing import Optional, List
+from json import load, dump
+from typing import Union, Optional, List
 
 
-def get_data_from_json(filename: str) -> Optional[dict]:
+def get_data_from_json_file(filename: str) -> Optional[dict]:
     """
     The function returns dictionary with data from specified JSON-file.
     :param filename: name of JSON-file
     """
     try:
-        with open(f'{filename}.json', 'r', encoding='utf-8') as file:
-            return json.load(file)
+        with open(f'{filename}.json', 'r', encoding='utf-8') as f:
+            return load(f)
     except FileNotFoundError:
         print('Указанный файл не найден.')
 
 
-def compare_dictionaries(
-        dictionary_1: dict, dictionary_2: dict, diff_list: List[str]
-) -> dict:
+def find_value_by_key(
+        initial_dictionary: dict, target_key: Union[str, int, float]
+) -> Optional[dict]:
     """
-    The function compares two dictionaries by specified keys. If values are
-    different the value of second dictionary is added in result dictionary.
-    :param dictionary_1: first dictionary (old data)
-    :param dictionary_2: second dictionary (new data)
-    :param diff_list: keys by which the differences are searching for
-    :return: dictionary with the newest data
+    The function finds value by source key.
+    :param initial_dictionary: source dictionary
+    :param target_key: source key for find value
+    :return: function returns value by specified key if source key is in
+    dictionary. Function returns None if key isn't in dictionary.
+    """
+    def recursive_search(
+            dictionary: dict, target: Union[str, int, float]
+    ) -> Optional[dict]:
+        """
+        The function for recursive search value by specified key.
+        :param dictionary: source dictionary
+        :param target: source key for find value
+        """
+        for key, value in dictionary.items():
+            if key == target:
+                return value
+            elif isinstance(value, dict):
+                search_result = recursive_search(value, target)
+                if search_result is not None:
+                    return search_result
+
+    result = recursive_search(initial_dictionary, target_key)
+    return result
+
+
+def compare_json_data(data_1: dict, data_2: dict, keys_for_search: List[str]) -> dict:
+    """
+    The function receives two dictionaries with data from two JSON-files and
+    compares them by keys that is specified in 'keys_for_search' list.
+    :param data_1: first data from JSON-file
+    :param data_2: second data from JSON-file
+    :param keys_for_search: list of keys by which differences will be searched
+    :return: the dictionary with differences in two datas. If there are no
+    differences the function returns empty dictionary
     """
     result_dictionary = dict()
-    for key, value in dictionary_1.items():
-        if (dictionary_1[key] != dictionary_2[key]) and (key in diff_list):
-            result_dictionary[key] = dictionary_2[key]
-        else:
-            if isinstance(value, dict):
-                result = compare_dictionaries(value, dictionary_2[key], diff_list)
-                if result:
-                    result_dictionary[value] = result
+    for key in keys_for_search:
+        old_value = find_value_by_key(data_1, key)
+        new_value = find_value_by_key(data_2, key)
+        if old_value != new_value:
+            result_dictionary[key] = new_value
     return result_dictionary
 
 
 if __name__ == '__main__':
-    old_data = get_data_from_json('json_old')
-    new_data = get_data_from_json('json_new')
-    difference_list = ["services", "staff", "datetime"]
-    changed_data = compare_dictionaries(old_data, new_data, difference_list)
-    print(changed_data if changed_data
-          else 'Данные по указанным ключам не изменились.')
+    old_data = get_data_from_json_file('json_old')
+    new_data = get_data_from_json_file('json_new')
+    keys_for_search_differences: List[str] = ['services', 'staff', 'datetime']
+    result = compare_json_data(old_data, new_data, keys_for_search_differences)
+    print(result)
+    with open('result.json', 'w', encoding='utf-8') as file:
+        dump(result, file, indent=4)
